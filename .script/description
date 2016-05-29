@@ -1,0 +1,21 @@
+#!/bin/sh
+
+HASH=$1
+
+if [ ! -f "${workdir}/.papermeta" ]; then
+  touch "${workdir}/.papermeta"
+fi
+
+data=`cat ${workdir}/.papermeta | grep ${HASH}`
+
+if [ "${data}" = "" ]; then
+  echo 'Entry Not Found'
+else
+  echo "$data" | awk -F"---" '{
+    print "Hash: " $1
+    print "Name: " $2
+    print "Author: " $3
+    print "Description: " $4
+  }'
+fi
+

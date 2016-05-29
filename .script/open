@@ -1,0 +1,8 @@
+#!/bin/sh
+
+if [ ! -f "${workdir}/.paperdb" ]; then
+  ${scriptdir}/updatedb
+fi
+
+hash=$1
+xdg-open "`cat ${workdir}/.paperdb | grep \"$hash\" | cut -f2-`"

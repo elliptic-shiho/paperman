@@ -1,0 +1,4 @@
+#!/bin/sh
+cd ${workdir}
+find . -name '*.pdf' -exec 'sha1sum' \{\} \; |
+    sed -E 's/\s\s/\t/g' > ${workdir}/.paperdb

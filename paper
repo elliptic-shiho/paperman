@@ -1,0 +1,15 @@
+#!/bin/sh
+
+if [ $# -lt 1 ]; then
+  echo "Usage: $0 [grep/open/updatedb/description]"
+  exit 1
+fi
+
+cmd_name=$1
+shift 1
+export "workdir"="`pwd`"
+export "scriptdir"="`pwd`/.script"
+./.script/$cmd_name $@
+unset workdir
+unset scriptdir
+
