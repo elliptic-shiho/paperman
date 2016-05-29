@@ -1,0 +1,15 @@
+#!/bin/sh
+
+tags=`echo $@ | awk '{OFS="|";$1=$1;print}'`
+
+echo $tags
+
+if [ ! -f "${workdir}/.papermeta" ]; then
+  touch "${workdir}/.papermeta"
+fi
+
+cat ${workdir}/.papermeta | awk -F"---" '{
+  if ($5 ~ /'$tags'/) {
+    printf "%s : %s\n", $1, $2
+  }
+}'
