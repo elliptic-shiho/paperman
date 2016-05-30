@@ -16,6 +16,7 @@ else
     print "Name: " $2
     print "Author: " $3
     print "Description: " $4
+    print "Tag(s): " $5
   }'
 fi
 

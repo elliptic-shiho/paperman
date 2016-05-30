@@ -1,6 +1,6 @@
 #!/bin/sh
 
-tags=`echo $@ | awk '{OFS="|";$1=$1;print}'`
+tags=`echo $@ | awk '{OFS="|";$1=$1;$0=tolower($0);print}'`
 
 echo $tags
 
@@ -9,7 +9,7 @@ if [ ! -f "${workdir}/.papermeta" ]; then
 fi
 
 cat ${workdir}/.papermeta | awk -F"---" '{
-  if ($5 ~ /'$tags'/) {
-    printf "%s : %s\n", $1, $2
+  if (tolower($5) ~ /'$tags'/) {
+    printf "%s : %s (Tag: %s)\n", $1, $2, $5
   }
 }'
