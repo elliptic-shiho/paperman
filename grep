@@ -1,0 +1,26 @@
+#!/bin/sh
+
+getname() {
+  hash=$1
+  basename "`cat ${workdir}/.paperdb | grep $hash | awk '{ print substr($0, 42); }'`" | sed 's/\.pdf//g'
+}
+
+if [ ! -f "${workdir}/.paperdb" ]; then
+  ${scriptdir}/updatedb
+fi
+
+keyword="$@"
+
+hashes=`cat ${workdir}/.paperdb | grep -iE "$keyword" | cut -f1`
+
+if [ -z "$hashes" ]; then
+  printf "[-] Not found\n"
+  exit 1
+fi
+
+printf "[+] %d paper(s) found.\n" "`echo \"$hashes\" | wc -l`"
+
+for x in $hashes; do
+  name=`getname $x`
+  printf "%s : %s\n" $x "$name"
+done
