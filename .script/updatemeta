@@ -1,0 +1,19 @@
+#!/bin/sh
+
+temp="/tmp/hashes.tmp"
+cat .papermeta | awk -F"---" '{print $1}' | sort > $temp
+
+cat ${workdir}/.paperdb               |
+  cut -f1                             |
+  diff $temp -                        |
+  grep -E "> [0-9a-f]"                |
+  sed 's/.\s\([0-9a-f]\+\)/\1/g'      |
+  xargs -I {} 'grep' '{}' '.paperdb'  |
+  awk -F'\t' '{
+    file = $2;
+    sub(/^.*\//, "", file);
+    sub(".pdf", "", file);
+    print $1 "---" file
+}' >> ${workdir}/.papermeta
+
+rm $temp

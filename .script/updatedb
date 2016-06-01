@@ -1,4 +1,23 @@
 #!/bin/sh
 cd ${workdir}
-find . -name '*.pdf' -exec 'sha1sum' \{\} \; |
-    sed -E 's/\s\s/\t/g' > ${workdir}/.paperdb
+
+tempfile="/tmp/${RANDOM}.tmp"
+touch $tempfile
+
+if [ ! -f "${workdir}/.paperdb" ]; then
+  touch "${workdir}/.paperdb"
+fi
+
+find . -name '*.pdf' -exec 'sha1sum' \{\} \; | sed -E 's/\s\s/\t/g' | sort > $tempfile
+
+for x in `cat $tempfile | cut -f1`; do
+  if [ ! "`grep $x $tempfile | wc -l`" -eq 1 ]; then
+    echo "Duplicate Entry Found! Hash: $x"
+    grep $x $tempfile
+    rm $tempfile
+    echo "Aborted."
+    exit 1
+  fi
+done
+
+mv $tempfile "${workdir}/.paperdb"

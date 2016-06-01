@@ -1,0 +1,7 @@
+#!/bin/sh
+
+if [ ! -f "${workdir}/.paperdb" ]; then
+  ${scriptdir}/updatedb
+fi
+
+printf "[+] %d Papers\n" `cat ${workdir}/.paperdb | wc -l`
