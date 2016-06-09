@@ -5,11 +5,18 @@ if [ $# -lt 1 ]; then
   exit 1
 fi
 
-cmd_name=$1
-shift 1
 export "workdir"="`pwd`"
 export "scriptdir"="`pwd`/.script"
-./.script/$cmd_name $@
+cmd_name=$1
+if [ -f "./.script/$cmd_name" ]; then
+  shift 1
+  ./.script/$cmd_name $@
+elif [ "`grep -iE \"$1\" .paperdb | wc -l`" -eq "1" ]; then
+  ./.script/open "$1"
+else
+  echo "Error: Invalid Argument: \"$@\"" >&2
+  echo "Candidate: " >&2
+  ./.script/grep $@ >&2
+fi
 unset workdir
 unset scriptdir
-
