@@ -7,16 +7,18 @@ if [ ! -f "${workdir}/.papermeta" ]; then
 fi
 
 data=`cat ${workdir}/.papermeta | grep ${HASH}`
+path=`cat ${workdir}/.paperdb | grep ${HASH} | cut -f2`
 
 if [ "${data}" = "" ]; then
   echo 'Entry Not Found'
 else
-  echo "$data" | awk -F"---" '{
-    print "Hash: " $1
-    print "Name: " $2
-    print "Author: " $3
-    print "Description: " $4
-    print "Tag(s): " $5
+  echo "$path---$data" | awk -F"---" '{
+    print "Hash: " $2
+    print "Path: " $1
+    print "Name: " $3
+    print "Author: " $4
+    print "Description: " $5
+    print "Tag(s): " $6
   }'
 fi
 
