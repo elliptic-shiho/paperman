@@ -11,7 +11,7 @@ fi
 
 keyword="$@"
 
-hashes=`cat ${workdir}/.paperdb | grep -iE "$keyword" | cut -f1`
+hashes=`cat ${workdir}/.papermeta | grep -iE "$keyword" | awk -F"---" '{print $1}'`
 
 if [ -z "$hashes" ]; then
   printf "[-] Not found\n"
