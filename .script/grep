@@ -2,7 +2,7 @@
 
 getname() {
   hash=$1
-  basename "`cat ${workdir}/.paperdb | grep $hash | awk '{ print substr($0, 42); }'`" | sed 's/\.pdf//g'
+  cat ${workdir}/.papermeta | grep $hash | awk -F"---" '{print $2}'
 }
 
 if [ ! -f "${workdir}/.paperdb" ]; then

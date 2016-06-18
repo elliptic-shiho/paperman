@@ -20,5 +20,9 @@ else
     print "Description: " $5
     print "Tag(s): " $6
   }'
+  if [ ! "`which lesspipe`" = "" ]; then
+    echo "Preview: "
+    lesspipe "${workdir}/$path" | head -n 20
+  fi
 fi
 

@@ -5,4 +5,4 @@ if [ ! -f "${workdir}/.paperdb" ]; then
 fi
 
 hash=$1
-xdg-open "`cat ${workdir}/.paperdb | grep \"$hash\" | cut -f2-`"
+xdg-open "`cat ${workdir}/.paperdb | grep \"$hash\" | cut -f2-`" &
