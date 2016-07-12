@@ -9,7 +9,7 @@ if [ ! -f "${workdir}/.paperdb" ]; then
   ${scriptdir}/updatedb
 fi
 
-keyword="$@"
+keyword=`echo $@ | sed -E 's/\s+/(\\\s\.+\\\s|\\\s+)/g'`
 
 hashes=`cat ${workdir}/.papermeta | grep -iE "$keyword" | awk -F"---" '{print $1}'`
 
