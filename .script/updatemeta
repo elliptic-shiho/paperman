@@ -1,7 +1,7 @@
 #!/bin/sh
 
 temp="/tmp/hashes.tmp"
-cat .papermeta | awk -F"---" '{print $1}' | sort > $temp
+cat ${workdir}/.papermeta | awk -F"---" '{print $1}' | sort > $temp
 
 cat ${workdir}/.paperdb               |
   cut -f1                             |
@@ -15,5 +15,16 @@ cat ${workdir}/.paperdb               |
     sub(".pdf", "", file);
     print $1 "---" file
 }' >> ${workdir}/.papermeta
+
+cp ${workdir}/.papermeta ${workdir}/.papermeta.work
+
+for x in `cat ${workdir}/.papermeta | awk -F'---' '{print $1}'`; do
+  if [ "`grep $x ${workdir}/.paperdb`" = "" ]; then
+    grep -v $x .papermeta.work > "${workdir}/.papermeta.work.2"
+    mv "${workdir}/.papermeta.work.2" "${workdir}/.papermeta.work"
+  fi
+done
+
+mv ${workdir}/.papermeta.work ${workdir}/.papermeta
 
 rm $temp
